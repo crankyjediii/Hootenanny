@@ -1,0 +1,91 @@
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="Hootenanny.ico">
+    <title>Hootenanny Tracker</title>
+    <style>
+    @font-face {
+        font-family: 'Burbank';
+        src: url(fonts/BurbankBigCondensed-Bold.otf);
+    }
+      img {
+        display: block;
+        margin: 0 auto;
+        border: 1px solid black;
+        top: 50%;
+        left: 50%;
+        position: fixed;
+        transform: translate(-50%, -50%);
+      }
+      p {
+        text-align: center;
+        color: white;
+        text-align: center;
+        font-size: 100;
+        font-family: 'Burbank';
+        position: static;
+      }
+      h2 {
+        text-align: center;
+        color: white;
+        text-align: center;
+        font-size: 100;
+        font-family: 'Burbank';
+        position: static;
+        padding-top: 650px;
+      }
+      h1 {
+        text-align: center;
+        color: white;
+        font-size: 100;
+        font-family: 'Burbank';
+      }
+      body {
+        background-color: black;
+      }
+    </style>
+  </head>
+  <body>
+    <img src="https://fortnite.gg/img/items/3826/bg.jpg?2" alt="Hootenany Emote">
+    <h1 style="clear: both;" >Days Since Last Appearance in the Item Shop:</h1>
+    <p style="clear: both;" id="day-counter">1062</p>
+    <h2 id="clock"></h2>
+    <script>
+      function incrementCounter() {
+        const counter = document.getElementById('day-counter');
+        counter.textContent = parseInt(counter.textContent) + 1;
+        localStorage.setItem('day-counter', counter.textContent);
+      }
+      function updateCounter() {
+        const counter = document.getElementById('day-counter');
+        const storedValue = localStorage.getItem('day-counter');
+        if (storedValue) {
+          counter.textContent = storedValue;
+        }
+      }
+      function updateClock() {
+        const clock = document.getElementById('clock');
+        const now = new Date();
+        const resetTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 18, 0, 0, 0); // 6:00 PM CST
+        if (now > resetTime) {
+          resetTime.setDate(resetTime.getDate() + 1);
+        }
+        const timeUntilReset = resetTime - now;
+        if (timeUntilReset <= 0) {
+          incrementCounter();
+          resetTime.setDate(resetTime.getDate() + 1);
+          timeUntilReset = resetTime - now;
+        }
+        const hours = Math.floor(timeUntilReset / (1000 * 60 * 60));
+        const minutes = Math.floor((timeUntilReset % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeUntilReset % (1000 * 60)) / 1000);
+        clock.textContent = `${hours} hours, ${minutes} minutes, ${seconds} seconds until shop reset`;
+      }
+      updateCounter();
+      updateClock();
+      setInterval(updateClock, 1000); // Update the clock every second
+      </script>
+  </body>
+</html>
